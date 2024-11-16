@@ -72,6 +72,57 @@ export default prisma
 if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma
 ```
 
+## Create Characters Page
+
+Create a new file called `app/characters/page.tsx` and add the following code:
+```tsx
+import prisma from '@/lib/db'
+import Link from 'next/link'
+
+export default async function CharactersPage() {
+
+    const characters = await prisma.character.findMany();
+
+    return <div>
+        <h1>Liste de mes personnages pour mon jeu</h1>
+        <ul>
+            {characters.map((character) => (
+                <li key={character.id}>{character.name} <Link href={`/characters/${character.id}`}>Voir</Link></li>
+            ))}
+        </ul>
+    </div>
+}
+
+```
+
+## Create Character Page
+
+Create a new file called `app/characters/[id]/page.tsx` and add the following code:
+```tsx
+import prisma from '@/lib/db'
+
+export default async function CharacterPage({ params }: { params: Promise<{ id: string }> }) {
+
+    const { id } = await params;
+
+    const character = await prisma.character.findUnique({ where: { id } })
+    if (!character) {
+        return <div>Personnage non trouvé</div>
+    }
+
+    return <div>
+        <h1>{character.name}</h1>
+        <ul>
+            <li>Attaque: {character.attack}</li>
+            <li>Défense: {character.defense}</li>
+            <li>Points de vie: {character.healthPoints}</li>
+            <li>Expérience: {character.experience}</li>
+        </ul>
+    </div>
+}
+
+```
+
 <!-- This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
