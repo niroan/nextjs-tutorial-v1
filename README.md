@@ -123,6 +123,53 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
 
 ```
 
+## Create Actions
+
+Create a new file called `actions/actions.tsx` and add the following code: 
+```tsx
+'use server'
+
+import prisma from '@/lib/db'
+
+import { revalidatePath } from 'next/cache';
+
+export async function createCharacter(formData: FormData) {
+    await prisma.character.create({
+        data: {
+            name: formData.get('name') as string,
+        }
+    })
+    revalidatePath('/characters');
+}
+
+```
+
+Add form to the `app/characters/page.tsx` file:
+```tsx
+import prisma from '@/lib/db'
+import Link from 'next/link'
+import { createCharacter } from '@/actions/actions'
+export default async function CharactersPage() {
+
+    const characters = await prisma.character.findMany();
+
+    return <div>
+        <h1>Liste de mes personnages pour mon jeu</h1>
+        <ul>
+            {characters.map((character) => (
+                <li key={character.id}>{character.name} <Link href={`/characters/${character.id}`}>Voir</Link></li>
+            ))}
+        </ul>
+
+        <form action={createCharacter} className='bg-gray-100 p-5'>
+            <input type="text" name="name" placeholder="Nom du personnage" className='rounded-sm px-2 py-1' />
+            <button type="submit" className='bg-blue-500 text-white rounded-sm px-2 py-1'>Créer</button>
+        </form>
+    </div>
+}
+
+``` 
+
 <!-- This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
