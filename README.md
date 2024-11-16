@@ -18,6 +18,18 @@ Setup the project with the following options:
 ✔ Would you like to customize the import alias (@/* by default)? … **No** / Yes
 ```
 
+## Install Prisma
+
+Launch the terminal and run the following command to install Prisma:
+```bash
+npm install prisma --save-dev
+```
+
+Setup Prisma with the init command with the database type SQLite:
+```bash
+npx prisma init --datasource-provider sqlite
+```
+
 <!-- This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
