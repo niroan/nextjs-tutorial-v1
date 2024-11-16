@@ -30,6 +30,27 @@ Setup Prisma with the init command with the database type SQLite:
 npx prisma init --datasource-provider sqlite
 ```
 
+## Create Character Model
+
+Add the Character model to the `prisma/schema.prisma` file:
+```prisma
+model Character {
+    id           String   @id @default(cuid())
+    name         String
+    attack       Int      @default(10)
+    defense      Int      @default(10)
+    healthPoints Int      @default(100)
+    experience   Int      @default(0)
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+}
+```
+
+Push the changes to the database:
+```bash
+npx prisma db push
+```
+
 <!-- This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
