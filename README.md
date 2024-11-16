@@ -51,6 +51,27 @@ Push the changes to the database:
 npx prisma db push
 ```
 
+## Create a new Prisma Client
+
+Create a new file called `lib/db.ts` and add the following code:
+```ts
+import { PrismaClient } from '@prisma/client'
+
+const prismaClientSingleton = () => {
+    return new PrismaClient()
+}
+
+declare const globalThis: {
+    prismaGlobal: ReturnType<typeof prismaClientSingleton>;
+} & typeof global;
+
+const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
+
+export default prisma
+
+if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma
+```
+
 <!-- This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
