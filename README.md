@@ -36,7 +36,7 @@ Add the Character model to the `prisma/schema.prisma` file:
 ```prisma
 model Character {
     id           String   @id @default(cuid())
-    name         String
+    name         String   @unique
     attack       Int      @default(10)
     defense      Int      @default(10)
     healthPoints Int      @default(100)
